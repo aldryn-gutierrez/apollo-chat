@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import React, { ReactElement } from 'react';
+import styled from "@emotion/styled";
+import React, { ReactElement } from "react";
 
 const StyledDiv = styled.div`
   // height: 65px;
@@ -13,12 +13,8 @@ const StyledDiv = styled.div`
   border-radius: 0 3px 0 0;
 `;
 
-const ChatBoxTitle = () : ReactElement => {
-  return (
-    <StyledDiv>
-      LGTM Channel
-    </StyledDiv>
-  )
-}
+const ChatBoxTitle = (): ReactElement => {
+  return <StyledDiv>LGTM Channel</StyledDiv>;
+};
 
 export default ChatBoxTitle;
