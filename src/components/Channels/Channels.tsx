@@ -1,14 +1,15 @@
-import React, {ReactElement} from 'react';
-import Channel from './Channel';
+import React, { ReactElement } from "react";
+import { ChannelType } from "../../contexts/ChannelContext";
+import Channel from "./Channel";
 
-const Channels = () : ReactElement => {
+const Channels = (): ReactElement => {
   return (
     <div>
-      <Channel name={"General Channel"} />
-      <Channel name={"Technology Channel"} />
-      <Channel name={"LGTM Channel"} />
+      <Channel name={ChannelType.General} />
+      <Channel name={ChannelType.Technology} />
+      <Channel name={ChannelType.LGTM} />
     </div>
-  )
-}
+  );
+};
 
 export default Channels;

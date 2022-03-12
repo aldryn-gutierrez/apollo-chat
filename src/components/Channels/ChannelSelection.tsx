@@ -1,14 +1,13 @@
-import React, {ReactElement} from 'react';
-import Channel from './Channel';
-import Channels from './Channels';
+import React, { ReactElement } from "react";
+import Channels from "./Channels";
 
-const ChannelSelection = () : ReactElement => {
+const ChannelSelection = (): ReactElement => {
   return (
     <div className="channel-selection">
       <p style={{}}>2. Choose your Channel</p>
       <Channels />
     </div>
-  )
-}
+  );
+};
 
 export default ChannelSelection;

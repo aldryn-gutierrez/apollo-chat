@@ -6,11 +6,11 @@ export enum ChannelType {
   LGTM = "LGTM",
 }
 
-export const ChannelContextInitialState = "";
+export const ChannelContextInitialState = "" as ChannelType;
 
 export type ChannelContextType = {
-  channel: string;
-  setChannel: (channel: string) => void;
+  channel: ChannelType;
+  setChannel: (channel: ChannelType) => void;
 };
 
 export const ChannelContext = createContext<ChannelContextType>({
@@ -18,5 +18,4 @@ export const ChannelContext = createContext<ChannelContextType>({
   setChannel: () => console.warn("no filters provider"),
 });
 
-export const usePaginators = (): ChannelContextType =>
-  useContext(ChannelContext);
+export const useChannel = (): ChannelContextType => useContext(ChannelContext);

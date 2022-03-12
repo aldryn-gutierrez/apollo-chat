@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
-import React, { ReactElement, useState } from "react";
-import ChatMessages, { QUERY } from "./ChatMessages";
+import React, { ReactElement, useEffect, useState } from "react";
+import ChatMessages from "./ChatMessages";
 import { useQuery, useMutation, gql } from "@apollo/client";
+import { useChannel } from "../../contexts/ChannelContext";
+import { useUser } from "../../contexts/UserContext";
+import IMessage from "../../interfaces/IMessage";
 
 const StyledDiv = styled.div`
   padding: 1rem;
@@ -30,31 +33,69 @@ const MUTATION = gql`
   }
 `;
 
+export const QUERY = gql`
+  query getMessages($channelId: ChannelId!) {
+    MessagesFetchLatest(channelId: $channelId) {
+      messageId
+      text
+      datetime
+      userId
+    }
+  }
+`;
+
 const ChatBox = (): ReactElement => {
-  const [postMessageMutation, { data, error }] = useMutation(MUTATION, {
-    refetchQueries: [{ query: QUERY }],
+  const { user } = useUser();
+  const { channel } = useChannel();
+  const [messages, setMessages] = useState(new Array<IMessage>());
+
+  const {
+    data: queryData,
+    // loading: queryLoading,
+    // error: queryError,
+  } = useQuery(QUERY, {
+    variables: { channelId: channel },
   });
+
+  useEffect(() => {
+    if (queryData?.MessagesFetchLatest) {
+      setMessages(queryData.MessagesFetchLatest);
+    }
+  }, [queryData]);
+
+  const [postMessageMutation, { error: mutationError }] = useMutation(
+    MUTATION,
+    {
+      refetchQueries: [
+        {
+          query: QUERY,
+          variables: { channelId: channel },
+        },
+      ],
+    }
+  );
   const [message, setMessage] = useState("");
 
   const onSubmit = () => {
     postMessageMutation({
-      variables: { channelId: "General", text: message, userId: "Sam" },
-      // optimisticResponse: true,
+      variables: { channelId: channel, text: message, userId: user },
     });
     setMessage("");
   };
 
-  if (error) {
-    return <div>{JSON.stringify(error)}</div>;
+  if (mutationError) {
+    const unsetMessage = {
+      messageId: "",
+      text: message,
+      datetime: new Date().toString(),
+      userId: user,
+    };
+    setMessages([...messages, unsetMessage]);
   }
 
   return (
     <StyledDiv>
-      {/*  */}
-      <ChatMessages />
-      {/*  */}
-
-      {/*  */}
+      <ChatMessages messages={messages} />
       <div
         style={{
           width: "100%",
@@ -77,7 +118,6 @@ const ChatBox = (): ReactElement => {
         />
         <Button onClick={() => onSubmit()}>Send Message</Button>
       </div>
-      {/*  */}
     </StyledDiv>
   );
 };

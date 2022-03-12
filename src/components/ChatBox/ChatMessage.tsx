@@ -7,6 +7,7 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import IMessage from "../../interfaces/IMessage";
+import { useUser } from "../../contexts/UserContext";
 
 library.add(faCheckCircle);
 library.add(faTimesCircle);
@@ -103,7 +104,8 @@ const ChatMessageStatusDiv = styled.div`
 `;
 
 const ChatMessage = ({ message }: { message: IMessage }): ReactElement => {
-  const isSender = "Joyse" === message.userId;
+  const { user: sender } = useUser();
+  const isSender = sender === message.userId;
 
   return (
     <StyledDiv className="chat-left" isSender={isSender}>
@@ -116,8 +118,17 @@ const ChatMessage = ({ message }: { message: IMessage }): ReactElement => {
         <span>08:55</span>
         {isSender && (
           <ChatMessageStatusDiv>
-            <FontAwesomeIcon icon={"check-circle"} color={"red"} />
-            <span>Error</span>
+            {message.messageId != "" ? (
+              <>
+                <FontAwesomeIcon icon={"check-circle"} color={"green"} />
+                <span>Sent</span>
+              </>
+            ) : (
+              <>
+                <FontAwesomeIcon icon={"times-circle"} color={"red"} />
+                <span>Error</span>
+              </>
+            )}
           </ChatMessageStatusDiv>
         )}
       </ChatHourDiv>

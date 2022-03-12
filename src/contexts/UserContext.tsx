@@ -6,11 +6,11 @@ export enum UserType {
   Russell = "Russell",
 }
 
-export const UserContextInitialState = "";
+export const UserContextInitialState = "" as UserType;
 
 export type UserContextType = {
-  user: string;
-  setUser: (user: string) => void;
+  user: UserType;
+  setUser: (user: UserType) => void;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -18,5 +18,4 @@ export const UserContext = createContext<UserContextType>({
   setUser: () => console.warn("no filters provider"),
 });
 
-export const usePaginators = (): UserContextType =>
-  useContext(UserContext);
+export const useUser = (): UserContextType => useContext(UserContext);

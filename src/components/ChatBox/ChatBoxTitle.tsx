@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { ReactElement } from "react";
+import { useChannel } from "../../contexts/ChannelContext";
 
 const StyledDiv = styled.div`
   // height: 65px;
@@ -14,7 +15,8 @@ const StyledDiv = styled.div`
 `;
 
 const ChatBoxTitle = (): ReactElement => {
-  return <StyledDiv>LGTM Channel</StyledDiv>;
+  const { channel } = useChannel();
+  return <StyledDiv>{channel} Channel</StyledDiv>;
 };
 
 export default ChatBoxTitle;

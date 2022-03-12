@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
-import React, {ReactElement} from 'react';
+import styled from "@emotion/styled";
+import React, { ReactElement } from "react";
+import { UserType, useUser } from "../../contexts/UserContext";
 
 const Select = styled.select`
   width: 100%;
@@ -9,19 +10,32 @@ const Select = styled.select`
   border-radius: 6px;
 `;
 
-const UserSelection = () : ReactElement => {
+const UserSelection = (): ReactElement => {
+  const { user, setUser } = useUser();
+
+  const users = [UserType.Joyse, UserType.Sam, UserType.Russell];
+
   return (
     <div className="user-selection">
       <p>1. Choose your user</p>
       <div>
-        <Select>
-          <option>Joyse</option>
-          <option>Sam</option>
-          <option>Russell</option>
+        <Select
+          name="user"
+          id="user"
+          onChange={(event) => setUser(event.target.value as UserType)}
+          defaultValue={user}
+        >
+          {users.map((targetUser) => {
+            return (
+              <option key={targetUser} value={targetUser}>
+                {targetUser}
+              </option>
+            );
+          })}
         </Select>
-        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default UserSelection;

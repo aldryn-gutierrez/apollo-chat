@@ -1,6 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from "react";
 
-const ClientOnly = ({ children }: { children: React.ReactNode }) : ReactElement => {
+const ClientOnly = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): ReactElement => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -12,6 +16,6 @@ const ClientOnly = ({ children }: { children: React.ReactNode }) : ReactElement 
   }
 
   return <div>{children}</div>;
-}
+};
 
 export default ClientOnly;
