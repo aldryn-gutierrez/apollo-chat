@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
-import { ChannelType } from "../../contexts/ChannelContext";
-import Channel from "./Channel";
+import { ChannelType } from "../../../contexts/ChannelContext";
+import Channel from "../Channel";
 
 const Channels = (): ReactElement => {
   return (

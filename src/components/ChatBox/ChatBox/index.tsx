@@ -1,23 +1,10 @@
-import styled from "@emotion/styled";
 import React, { ReactElement, useEffect, useState } from "react";
-import ChatMessages from "./ChatMessages";
+import ChatMessages from "./../ChatMessages";
 import { useQuery, useMutation, gql } from "@apollo/client";
-import { useChannel } from "../../contexts/ChannelContext";
-import { useUser } from "../../contexts/UserContext";
-import IMessage from "../../interfaces/IMessage";
-
-const StyledDiv = styled.div`
-  padding: 1rem;
-`;
-
-const Button = styled.button`
-  background: #17a2b8;
-  color: white;
-  font-size: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid #17a2b8;
-  border-radius: 3px;
-`;
+import { useChannel } from "../../../contexts/ChannelContext";
+import { useUser } from "../../../contexts/UserContext";
+import IMessage from "../../../interfaces/IMessage";
+import { Button, StyledDiv } from "./style";
 
 const MUTATION = gql`
   mutation postMessage(

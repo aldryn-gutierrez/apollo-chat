@@ -1,8 +1,6 @@
 import styled from "@emotion/styled";
-import React, { ReactElement } from "react";
-import { ChannelType, useChannel } from "../../contexts/ChannelContext";
 
-const StyleDiv = styled.div<{ selected: boolean }>`
+export const StyleDiv = styled.div<{ selected: boolean }>`
   position: relative;
   width: inherit;
   padding: 20px 1rem;
@@ -37,14 +35,3 @@ const StyleDiv = styled.div<{ selected: boolean }>`
     ); /* Opera 11.10+ */
   }
 `;
-
-const Channel = ({ name }: { name: ChannelType }): ReactElement => {
-  const { channel, setChannel } = useChannel();
-  return (
-    <StyleDiv selected={channel === name} onClick={() => setChannel(name)}>
-      {name} Channel
-    </StyleDiv>
-  );
-};
-
-export default Channel;

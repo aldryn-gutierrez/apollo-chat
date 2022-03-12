@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import Channels from "./Channels";
+import Channels from "../Channels";
 
 const ChannelSelection = (): ReactElement => {
   return (
