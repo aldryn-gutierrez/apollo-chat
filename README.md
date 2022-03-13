@@ -19,7 +19,7 @@ This project allows you to view a chatbox, select users and channel, and chat!
 	 yarn dev
 	```
 
-## Searching Repositories
+## Interacting with the Chat
   
 Enter in your browser http://localhost:3000/ and you should see a search page like this:
 
