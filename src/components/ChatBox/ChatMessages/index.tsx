@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { memo, ReactElement } from "react";
 import IMessage from "../../../interfaces/IMessage";
 import { StyledDiv } from "../ChatMessages/style";
 import ChatMessage from "./../ChatMessage";
@@ -21,4 +21,4 @@ const ChatMessages = ({ messages }: { messages: IMessage[] }): ReactElement => {
   );
 };
 
-export default ChatMessages;
+export default memo(ChatMessages);

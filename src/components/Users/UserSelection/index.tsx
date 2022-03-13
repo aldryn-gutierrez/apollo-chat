@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { memo, ReactElement } from "react";
 import { UserType, useUser } from "../../../contexts/UserContext";
 import { Select } from "./style";
 
@@ -30,4 +30,4 @@ const UserSelection = (): ReactElement => {
   );
 };
 
-export default UserSelection;
+export default memo(UserSelection);

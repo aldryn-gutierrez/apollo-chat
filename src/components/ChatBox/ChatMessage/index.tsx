@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { memo, ReactElement } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -8,13 +8,12 @@ import {
 import IMessage from "../../../interfaces/IMessage";
 import { useUser } from "../../../contexts/UserContext";
 import {
-  ChatAvatarImage,
   ChatHourDiv,
   ChatMessageStatusDiv,
-  ChatNameDiv,
   ChatTextDiv,
   StyledDiv,
 } from "./style";
+import ChatAvatar from "../ChatAvatar";
 
 library.add(faCheckCircle);
 library.add(faTimesCircle);
@@ -25,10 +24,7 @@ const ChatMessage = ({ message }: { message: IMessage }): ReactElement => {
 
   return (
     <StyledDiv className="chat-left" isSender={isSender}>
-      <div className="chat-avatar">
-        <ChatAvatarImage />
-        <ChatNameDiv>{message.userId}</ChatNameDiv>
-      </div>
+      <ChatAvatar userId={message.userId} />
       <ChatTextDiv isSender={isSender}>{message.text}</ChatTextDiv>
       <ChatHourDiv isSender={isSender}>
         <span>08:55</span>
@@ -52,4 +48,4 @@ const ChatMessage = ({ message }: { message: IMessage }): ReactElement => {
   );
 };
 
-export default ChatMessage;
+export default memo(ChatMessage);

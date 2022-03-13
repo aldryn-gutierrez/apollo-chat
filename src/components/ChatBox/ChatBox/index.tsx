@@ -4,7 +4,7 @@ import { useQuery, useMutation, gql, useLazyQuery } from "@apollo/client";
 import { useChannel } from "../../../contexts/ChannelContext";
 import { useUser } from "../../../contexts/UserContext";
 import IMessage from "../../../interfaces/IMessage";
-import { Button, StyledDiv } from "./style";
+import { Button, ErrorSpan, StyledDiv } from "./style";
 import Cookies from "universal-cookie";
 
 const POST_MESSAGE = gql`
@@ -52,8 +52,9 @@ const ChatBox = (): ReactElement => {
   const { channel } = useChannel();
   const [messages, setMessages] = useState(new Array<IMessage>());
   const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const { data: queryData } = useQuery(GET_MESSAGES, {
+  const { data: queryData, loading: queryLoading } = useQuery(GET_MESSAGES, {
     variables: { channelId: channel },
   });
 
@@ -88,31 +89,51 @@ const ChatBox = (): ReactElement => {
     }
   }, [fetchMoreData]);
 
-  const [postMessageMutation] = useMutation(POST_MESSAGE, {
-    refetchQueries: [
-      {
-        query: GET_MESSAGES,
-        variables: { channelId: channel },
+  const [postMessageMutation, { loading: mutationLoading }] = useMutation(
+    POST_MESSAGE,
+    {
+      refetchQueries: [
+        {
+          query: GET_MESSAGES,
+          variables: { channelId: channel },
+        },
+      ],
+      onCompleted: () => {
+        setMessage("");
+        setErrorMessage("");
       },
-    ],
-    onError: (error) => {
-      alert("GOT ERROR");
-      console.log(error);
-      const unsetMessage = {
-        messageId: "",
-        text: message,
-        datetime: new Date().toString(),
-        userId: user,
-      };
-      setMessages([unsetMessage, ...messages]);
-    },
-  });
+      onError: () => {
+        setErrorMessage("Oops an error occured.. Please try again!");
+
+        setTimeout(
+          () =>
+            postMessageMutation({
+              variables: { channelId: channel, text: message, userId: user },
+            }),
+          5000
+        );
+
+        const unsetMessage = {
+          messageId: "",
+          text: message,
+          datetime: new Date().toString(),
+          userId: user,
+        };
+        setMessages([unsetMessage, ...messages]);
+      },
+    }
+  );
 
   const onSubmit = () => {
+    if (message === "") {
+      setErrorMessage("Please enter a message");
+      return;
+    }
+
+    setErrorMessage("");
     postMessageMutation({
       variables: { channelId: channel, text: message, userId: user },
     });
-    setMessage("");
   };
 
   // Save User Text to Cookies
@@ -129,6 +150,7 @@ const ChatBox = (): ReactElement => {
     <StyledDiv>
       {messages && messages[messages.length - 1] && !fetchMoreDataLoading && (
         <Button
+          enabled={true}
           onClick={() => {
             fetchMoreMessages({
               variables: {
@@ -142,9 +164,10 @@ const ChatBox = (): ReactElement => {
           Read More
         </Button>
       )}
-      <ChatMessages messages={messages} />
+      {queryLoading ? <p>Loading...</p> : <ChatMessages messages={messages} />}
       {messages && messages[0] && !fetchMoreDataLoading && (
         <Button
+          enabled={true}
           onClick={() => {
             fetchMoreMessages({
               variables: {
@@ -178,8 +201,11 @@ const ChatBox = (): ReactElement => {
             marginBottom: ".35em",
           }}
         />
-        <Button onClick={() => onSubmit()}>Send Message</Button>
+        <Button enabled={!mutationLoading} onClick={() => onSubmit()}>
+          Send Message
+        </Button>
       </div>
+      {errorMessage && <ErrorSpan>{errorMessage}</ErrorSpan>}
     </StyledDiv>
   );
 };

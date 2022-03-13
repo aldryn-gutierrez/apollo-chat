@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { memo, ReactElement } from "react";
 import Channels from "../Channels";
 
 const ChannelSelection = (): ReactElement => {
@@ -10,4 +10,4 @@ const ChannelSelection = (): ReactElement => {
   );
 };
 
-export default ChannelSelection;
+export default memo(ChannelSelection);
